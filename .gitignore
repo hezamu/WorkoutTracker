@@ -1,0 +1,13 @@
+*~
+.cache
+.settings
+.external*
+.DS_Store
+.worksheet
+build/*
+WebContent/VAADIN/widgetsets/*
+GWT*
+**.sc
+*.launch
+*.db
+/build

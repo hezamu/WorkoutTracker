@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>WorkoutTracker</display-name>
+	<context-param>
+		<description>
+		Vaadin production mode</description>
+		<param-name>productionMode</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>WorkoutTracker</servlet-name>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin UI class to use</description>
+			<param-name>UI</param-name>
+			<param-value>org.vaadin.hezamu.workouttracker.WorkoutTrackerUI</param-value>
+		</init-param>
+ 		<init-param>
+        	<param-name>widgetset</param-name>
+        	<param-value>org.vaadin.hezamu.workouttracker.widgetset.WorkouttrackerWidgetset</param-value>
+    	</init-param>
+    </servlet>
+	<!-- 
+	<servlet>
+		<servlet-name>Java8</servlet-name>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin UI class to use</description>
+			<param-name>UI</param-name>
+			<param-value>org.vaadin.hezamu.workouttracker.Java8UI</param-value>
+		</init-param>
+ 		<init-param>
+        	<param-name>widgetset</param-name>
+        	<param-value>org.vaadin.hezamu.workouttracker.widgetset.WorkouttrackerWidgetset</param-value>
+    	</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>Scala</servlet-name>
+		<servlet-class>vaadin.scala.server.ScaladinServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin UI class to use</description>
+			<param-name>ScaladinUI</param-name>
+			<param-value>org.vaadin.hezamu.workouttracker.ScalaUI</param-value>
+		</init-param>
+ 		<init-param>
+        	<param-name>widgetset</param-name>
+        	<param-value>org.vaadin.hezamu.workouttracker.widgetset.WorkouttrackerWidgetset</param-value>
+    	</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Java7</servlet-name>
+		<url-pattern>/Java7/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Java8</servlet-name>
+		<url-pattern>/Java8/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Scala</servlet-name>
+		<url-pattern>/Scala/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>Java8</servlet-name>
+        <url-pattern>/VAADIN/*</url-pattern>
+    </servlet-mapping>
+	 -->
+	<servlet-mapping>
+		<servlet-name>WorkoutTracker</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	 
+</web-app>

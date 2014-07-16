@@ -145,17 +145,25 @@ public class WorkoutPresenter {
 		Component c = null;
 		for (Iterator<Component> iter = editor.iterator(); iter.hasNext(); c = iter
 				.next()) {
-			if (c instanceof Field) {
-				Field field = (Field) c;
-
-				try {
-					field.validate();
-				} catch (InvalidValueException ive) {
-					result.add(field.getCaption());
-				}
-			}
+			if (fieldNotValidating(c))
+				result.add(c.getCaption());
 		}
 
 		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean fieldNotValidating(Component c) {
+		if (c instanceof Field) {
+			Field field = (Field) c;
+
+			try {
+				field.validate();
+			} catch (InvalidValueException ive) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

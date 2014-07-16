@@ -33,7 +33,7 @@ public class WorkoutEditorView extends GridLayout {
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
 		addComponent(activity = new ComboBox("Activity"));
-		activity.addItems("Cycling", "Walking", "Running", "Gym", "Other");
+		activity.addItems(WorkoutPresenter.ACTIVITIES);
 		activity.setRequired(true);
 		activity.setInputPrompt("Required");
 

@@ -23,32 +23,6 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		return workouts;
 	}
 
-	@SuppressWarnings("deprecation")
-	private final int monthAge(Date date) {
-		return (new Date().getYear() - date.getYear()) * 12
-				+ (new Date().getMonth() - date.getMonth());
-	}
-
-	@Override
-	public List<Workout> findByAge(int maxMonths) {
-		List<Workout> result = new ArrayList<>();
-
-		for (Workout w : workouts) {
-			if (monthAge(w.getDate()) < maxMonths) {
-				result.add(w);
-			}
-		}
-
-		Collections.sort(result, new Comparator<Workout>() {
-			@Override
-			public int compare(Workout o1, Workout o2) {
-				return monthAge(o2.getDate()) - monthAge(o1.getDate());
-			}
-		});
-
-		return result;
-	}
-
 	// Just a fragile dummy implementation.
 	@Override
 	public Double[] getTotalKCal(int maxMonths) {
@@ -57,7 +31,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		double accu = 0;
 		int md = 11;
 		for (Workout w : findByAge(maxMonths)) {
-			if (monthAge(w.getDate()) < md) {
+			if (w.monthAge() < md) {
 				result.add(accu);
 				accu = w.getCalories();
 				md--;
@@ -83,7 +57,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 			if (w.getAvgHR() == 0)
 				continue;
 
-			if (monthAge(w.getDate()) < md) {
+			if (w.monthAge() < md) {
 				if (count == 0) {
 					result.add(0D);
 				} else {
@@ -103,6 +77,25 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		result.add(accu / count);
 
 		return result.toArray(new Double[0]);
+	}
+
+	private List<Workout> findByAge(int maxMonths) {
+		List<Workout> result = new ArrayList<>();
+
+		for (Workout w : workouts) {
+			if (w.monthAge() < maxMonths) {
+				result.add(w);
+			}
+		}
+
+		Collections.sort(result, new Comparator<Workout>() {
+			@Override
+			public int compare(Workout o1, Workout o2) {
+				return o2.monthAge() - o1.monthAge();
+			}
+		});
+
+		return result;
 	}
 
 	@SuppressWarnings("deprecation")

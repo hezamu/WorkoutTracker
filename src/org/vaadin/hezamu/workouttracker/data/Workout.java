@@ -30,6 +30,11 @@ public class Workout {
 		this.comment = "";
 	}
 
+	public int monthAge() {
+		return (new Date().getYear() - date.getYear()) * 12
+				+ (new Date().getMonth() - date.getMonth());
+	}
+
 	public String getActivity() {
 		return activity;
 	}

@@ -1,7 +1,6 @@
 package org.vaadin.hezamu.workouttracker.data;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,15 +25,12 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 	// Just a fragile dummy implementation.
 	@Override
-	public Double[] getTotalKCal(int maxMonths) {
+	public Number[] getTotalKCal(int maxMonths) {
 		List<Double> result = new ArrayList<>();
 
 		double accu = 0;
 		int md = 11;
 		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
-			System.out.println("Found workout on "
-					+ w.getDate().format(DateTimeFormatter.BASIC_ISO_DATE));
-
 			if (w.monthAge() < md) {
 				result.add(accu);
 				accu = w.getCalories();
@@ -51,7 +47,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 	// Just a fragile dummy implementation.
 	@Override
-	public Double[] getAverageHR(int maxMonths) {
+	public Number[] getAverageHR(int maxMonths) {
 		List<Double> result = new ArrayList<>();
 
 		int count = 0;
@@ -108,8 +104,8 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 					int duration = rnd.nextInt(60) + 15;
 					double avgHr = 110 + rnd.nextDouble() * 15;
 
-					result.add(new Workout(WorkoutPresenter.ACTIVITIES[rnd
-							.nextInt(WorkoutPresenter.ACTIVITIES.length)],
+					result.add(new Workout(WorkoutPresenter.Activities()[rnd
+							.nextInt(WorkoutPresenter.Activities().length)],
 							date, duration, avgHr,
 							avgHr + rnd.nextDouble() * 5, (duration / 60)
 									* rnd.nextInt(150) + 200, ""));

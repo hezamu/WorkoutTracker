@@ -1,15 +1,16 @@
 package org.vaadin.hezamu.workouttracker.data;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class Workout {
 	private String activity;
-	private Date date;
+	private LocalDate date;
 	private int duration, calories;
 	private double avgHR, maxHR;
 	private String comment;
 
-	public Workout(String activity, Date date, int time, double avgHR,
+	public Workout(String activity, LocalDate date, int time, double avgHR,
 			double maxHR, int kcal, String comment) {
 		this.activity = activity;
 		this.date = date;
@@ -22,12 +23,16 @@ public class Workout {
 
 	public Workout() {
 		this.activity = "";
-		this.date = new Date();
+		this.date = LocalDate.now();
 		this.duration = 0;
 		this.avgHR = 0;
 		this.maxHR = 0;
 		this.calories = 0;
 		this.comment = "";
+	}
+
+	public int monthAge() {
+		return (int) Period.between(date, LocalDate.now()).toTotalMonths();
 	}
 
 	public String getActivity() {
@@ -38,11 +43,11 @@ public class Workout {
 		this.activity = activity;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

@@ -3,6 +3,7 @@ package org.vaadin.hezamu.workouttracker;
 import java.util.Date;
 
 import com.vaadin.data.Validator;
+import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -11,7 +12,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class WorkoutEditorView extends GridLayout {
@@ -27,13 +28,14 @@ public class WorkoutEditorView extends GridLayout {
 		setSpacing(true);
 
 		Label title = new Label("New Workout");
-		title.addStyleName(Reindeer.LABEL_H2);
+		title.addStyleName(ValoTheme.LABEL_H3);
+		title.addStyleName(ValoTheme.LABEL_BOLD);
 		title.setSizeUndefined();
 		addComponent(title, 0, 0, 1, 0);
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
 		addComponent(activity = new ComboBox("Activity"));
-		activity.addItems("Cycling", "Walking", "Running", "Gym", "Other");
+		activity.addItems(WorkoutPresenter.ACTIVITIES);
 		activity.setRequired(true);
 		activity.setInputPrompt("Required");
 
@@ -46,13 +48,9 @@ public class WorkoutEditorView extends GridLayout {
 		date.setValue(new Date());
 		date.setRequired(true);
 		date.setDateFormat("dd.MM.yyyy");
-		date.addValidator(new Validator() {
-			@Override
-			public void validate(Object value) throws InvalidValueException {
-				if (value instanceof Date && new Date().before((Date) value))
-					throw new InvalidValueException(
-							"Date can't be in the future");
-			}
+		date.addValidator(value -> {
+			if (value instanceof Date && new Date().before((Date) value))
+				throw new InvalidValueException("Date can't be in the future");
 		});
 
 		addComponent(calories = new TextField("Calories"));
@@ -69,10 +67,11 @@ public class WorkoutEditorView extends GridLayout {
 
 		addComponent(rating = new TextField("Rating"), 0, 4, 1, 4);
 		rating.setSizeFull();
+		rating.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 		rating.setEnabled(false);
 
 		addComponent(add = new Button("Add"));
-		add.addStyleName(Reindeer.BUTTON_DEFAULT);
+		add.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		add.setSizeFull();
 
 		addComponent(clear = new Button("Clear"));

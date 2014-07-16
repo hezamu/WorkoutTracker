@@ -1,11 +1,12 @@
 package org.vaadin.hezamu.workouttracker.data;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.vaadin.hezamu.workouttracker.WorkoutPresenter;
 
@@ -19,34 +20,8 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 	}
 
 	@Override
-	public List<Workout> findAll() {
-		return workouts;
-	}
-
-	@SuppressWarnings("deprecation")
-	private final int monthAge(Date date) {
-		return (new Date().getYear() - date.getYear()) * 12
-				+ (new Date().getMonth() - date.getMonth());
-	}
-
-	@Override
-	public List<Workout> findByAge(int maxMonths) {
-		List<Workout> result = new ArrayList<>();
-
-		for (Workout w : workouts) {
-			if (monthAge(w.getDate()) < maxMonths) {
-				result.add(w);
-			}
-		}
-
-		Collections.sort(result, new Comparator<Workout>() {
-			@Override
-			public int compare(Workout o1, Workout o2) {
-				return monthAge(o2.getDate()) - monthAge(o1.getDate());
-			}
-		});
-
-		return result;
+	public Stream<Workout> findAll() {
+		return workouts.stream();
 	}
 
 	// Just a fragile dummy implementation.
@@ -56,8 +31,11 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 		double accu = 0;
 		int md = 11;
-		for (Workout w : findByAge(maxMonths)) {
-			if (monthAge(w.getDate()) < md) {
+		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
+			System.out.println("Found workout on "
+					+ w.getDate().format(DateTimeFormatter.BASIC_ISO_DATE));
+
+			if (w.monthAge() < md) {
 				result.add(accu);
 				accu = w.getCalories();
 				md--;
@@ -79,11 +57,11 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		int count = 0;
 		double accu = 0;
 		int md = 11;
-		for (Workout w : findByAge(maxMonths)) {
+		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
 			if (w.getAvgHR() == 0)
 				continue;
 
-			if (monthAge(w.getDate()) < md) {
+			if (w.monthAge() < md) {
 				if (count == 0) {
 					result.add(0D);
 				} else {
@@ -105,15 +83,24 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		return result.toArray(new Double[0]);
 	}
 
-	@SuppressWarnings("deprecation")
+	/* @formatter:off */
+	private Stream<Workout> findByAge(int maxMonths) {
+		return workouts.stream()
+			.filter(w -> w.monthAge() < maxMonths)
+			.sorted(Comparator.comparing(Workout::monthAge).reversed());
+	}
+	/* @formatter:on */
+
 	private List<Workout> generateDummyData() {
 		List<Workout> result = new ArrayList<>();
 
 		Random rnd = new Random();
 
-		for (int year = 112; year <= 114; year++) {
-			for (int month = 0; month <= 11; month++) {
-				if (year == 114 && month > 6)
+		for (int year = 2012; year <= 2014; year++) {
+			for (int month = 1; month <= 12; month++) {
+				LocalDate date = LocalDate.of(year, month, rnd.nextInt(28) + 1);
+
+				if (LocalDate.now().isBefore(date))
 					break;
 
 				int count = rnd.nextInt(7) + 3;
@@ -123,9 +110,9 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 					result.add(new Workout(WorkoutPresenter.ACTIVITIES[rnd
 							.nextInt(WorkoutPresenter.ACTIVITIES.length)],
-							new Date(year, month, rnd.nextInt(30) + 1),
-							duration, avgHr, avgHr + rnd.nextDouble() * 5,
-							(duration / 60) * rnd.nextInt(150) + 200, ""));
+							date, duration, avgHr,
+							avgHr + rnd.nextDouble() * 5, (duration / 60)
+									* rnd.nextInt(150) + 200, ""));
 				}
 			}
 		}
@@ -134,7 +121,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 	}
 
 	@Override
-	public void add(String activity, int minutes, Date date, int calories,
+	public void add(String activity, int minutes, LocalDate date, int calories,
 			double avgHR, double maxHR) {
 		workouts.add(new Workout(activity, date, minutes, avgHR, maxHR,
 				calories, ""));

@@ -17,8 +17,8 @@ import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
 public class WorkoutPresenter {
-	private final WorkoutEditorView editor;
-	private final WorkoutGraphView graph;
+	final WorkoutEditorView editor;
+	final WorkoutGraphView graph;
 	private final WorkoutDAO dao;
 
 	public final static String[] ACTIVITIES = { "Cycling", "Walking",
@@ -31,6 +31,14 @@ public class WorkoutPresenter {
 
 		editor = new WorkoutEditorView();
 
+		setupEditorListeners();
+
+		graph.update(dao.getTotalKCal(12), dao.getAverageHR(12));
+
+		updateRating();
+	}
+
+	private void setupEditorListeners() {
 		editor.date.addValueChangeListener(new Property.ValueChangeListener() {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
@@ -101,18 +109,6 @@ public class WorkoutPresenter {
 				updateRating();
 			}
 		});
-
-		graph.update(dao.getTotalKCal(12), dao.getAverageHR(12));
-
-		updateRating();
-	}
-
-	public WorkoutEditorView getEditor() {
-		return editor;
-	}
-
-	public WorkoutGraphView getGraph() {
-		return graph;
 	}
 
 	private void updateRating() {

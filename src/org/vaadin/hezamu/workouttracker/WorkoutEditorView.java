@@ -11,7 +11,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.themes.Reindeer;
 
 @SuppressWarnings("serial")
 public class WorkoutEditorView extends GridLayout {
@@ -27,8 +27,7 @@ public class WorkoutEditorView extends GridLayout {
 		setSpacing(true);
 
 		Label title = new Label("New Workout");
-		title.addStyleName(ValoTheme.LABEL_H3);
-		title.addStyleName(ValoTheme.LABEL_BOLD);
+		title.addStyleName(Reindeer.LABEL_H2);
 		title.setSizeUndefined();
 		addComponent(title, 0, 0, 1, 0);
 		setComponentAlignment(title, Alignment.TOP_CENTER);
@@ -70,11 +69,10 @@ public class WorkoutEditorView extends GridLayout {
 
 		addComponent(rating = new TextField("Rating"), 0, 4, 1, 4);
 		rating.setSizeFull();
-		rating.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 		rating.setEnabled(false);
 
 		addComponent(add = new Button("Add"));
-		add.addStyleName(ValoTheme.BUTTON_PRIMARY);
+		add.addStyleName(Reindeer.BUTTON_DEFAULT);
 		add.setSizeFull();
 
 		addComponent(clear = new Button("Clear"));
@@ -89,6 +87,26 @@ public class WorkoutEditorView extends GridLayout {
 		avgHR.setValue("");
 		maxHR.setValue("");
 		comment.setValue("");
+	}
+
+	public int getCalories() {
+		return getIntFieldValue(calories);
+	}
+
+	public double getAvgHR() {
+		return getIntFieldValue(avgHR);
+	}
+
+	public double getMaxHR() {
+		return getIntFieldValue(maxHR);
+	}
+
+	private int getIntFieldValue(TextField field) {
+		try {
+			return Integer.parseInt(field.getValue());
+		} catch (NumberFormatException nfe) {
+			return 0;
+		}
 	}
 
 	private class IntegerFieldValidator implements Validator {
@@ -116,25 +134,5 @@ public class WorkoutEditorView extends GridLayout {
 						+ " and " + max);
 			}
 		}
-	}
-
-	private int getIntFieldValue(TextField field) {
-		try {
-			return Integer.parseInt(field.getValue());
-		} catch (NumberFormatException nfe) {
-			return 0;
-		}
-	}
-
-	public int getCalories() {
-		return getIntFieldValue(calories);
-	}
-
-	public double getAvgHR() {
-		return getIntFieldValue(avgHR);
-	}
-
-	public double getMaxHR() {
-		return getIntFieldValue(maxHR);
 	}
 }

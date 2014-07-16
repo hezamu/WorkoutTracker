@@ -82,7 +82,7 @@ public class WorkoutEditorView extends GridLayout {
 	}
 
 	public void clearValues() {
-		activity.setValue("");
+		activity.setValue(null);
 		duration.setValue("");
 		date.setValue(new Date());
 		calories.setValue("");

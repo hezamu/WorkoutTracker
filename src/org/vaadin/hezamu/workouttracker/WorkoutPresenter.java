@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAO;
+import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
 import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
 
 import com.vaadin.data.Property;
@@ -25,7 +25,7 @@ public class WorkoutPresenter {
 			"Running", "Gym", "Other" };
 
 	public WorkoutPresenter() {
-		dao = new DummyWorkoutDAO();
+		dao = new DummyWorkoutDAOImpl();
 
 		graph = new WorkoutGraphView();
 

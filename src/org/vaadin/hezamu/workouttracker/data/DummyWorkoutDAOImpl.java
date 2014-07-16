@@ -9,10 +9,10 @@ import java.util.Random;
 
 import org.vaadin.hezamu.workouttracker.WorkoutPresenter;
 
-public class DummyWorkoutDAO implements WorkoutDAO {
+public class DummyWorkoutDAOImpl implements WorkoutDAO {
 	private List<Workout> workouts;
 
-	public DummyWorkoutDAO() {
+	public DummyWorkoutDAOImpl() {
 		workouts = new ArrayList<>();
 
 		workouts.addAll(generateDummyData());
@@ -80,6 +80,9 @@ public class DummyWorkoutDAO implements WorkoutDAO {
 		double accu = 0;
 		int md = 11;
 		for (Workout w : findByAge(maxMonths)) {
+			if (w.getAvgHR() == 0)
+				continue;
+
 			if (monthAge(w.getDate()) < md) {
 				if (count == 0) {
 					result.add(0D);

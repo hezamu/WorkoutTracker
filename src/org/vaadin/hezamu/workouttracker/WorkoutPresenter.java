@@ -14,6 +14,7 @@ import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 
 public class WorkoutPresenter {
@@ -97,19 +98,27 @@ public class WorkoutPresenter {
 	}
 
 	/* @formatter:off */
-	@SuppressWarnings({ "rawtypes"})
 	private List<String> getInvalidInputNames() {
 		Stream<String> s = StreamSupport.stream(editor.spliterator(), true)
-				.filter(c -> c instanceof Field)
-				.flatMap(field -> {
-					try {
-						((Field) field).validate();
-						return Stream.empty();
-					} catch (InvalidValueException ive) {
-						return Stream.of(field.getCaption());
-					}
-				});
+				.filter(c -> fieldNotValidating(c))
+				.map(c -> c.getCaption());
 
 		return Arrays.asList(s.toArray(String[]::new));
+	}
+	/* @formatter:on */
+
+	@SuppressWarnings("rawtypes")
+	private boolean fieldNotValidating(Component c) {
+		if (c instanceof Field) {
+			Field field = (Field) c;
+
+			try {
+				field.validate();
+			} catch (InvalidValueException ive) {
+				return true;
+			}
+		}
+
+		return false; // Validates, or not a Field
 	}
 }

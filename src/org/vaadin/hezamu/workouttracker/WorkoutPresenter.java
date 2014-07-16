@@ -164,6 +164,6 @@ public class WorkoutPresenter {
 			}
 		}
 
-		return false;
+		return false; // Validates, or not a Field
 	}
 }

@@ -25,7 +25,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 	// Just a fragile dummy implementation.
 	@Override
-	public Double[] getTotalKCal(int maxMonths) {
+	public Number[] getTotalKCal(int maxMonths) {
 		List<Double> result = new ArrayList<>();
 
 		double accu = 0;
@@ -47,7 +47,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 	// Just a fragile dummy implementation.
 	@Override
-	public Double[] getAverageHR(int maxMonths) {
+	public Number[] getAverageHR(int maxMonths) {
 		List<Double> result = new ArrayList<>();
 
 		int count = 0;

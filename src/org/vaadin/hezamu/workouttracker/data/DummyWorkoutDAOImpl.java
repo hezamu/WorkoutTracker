@@ -19,8 +19,8 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 	}
 
 	@Override
-	public Stream<Workout> findAll() {
-		return workouts.stream();
+	public List<Workout> findAll() {
+		return workouts;
 	}
 
 	// Just a fragile dummy implementation.

@@ -1,13 +1,13 @@
 package org.vaadin.hezamu.workouttracker.data;
 
 import java.time.LocalDate;
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface WorkoutDAO {
 	/**
 	 * Get all workouts.
 	 */
-	Stream<Workout> findAll();
+	List<Workout> findAll();
 
 	/**
 	 * Get the monthly kcal totals for the workouts in the X previous months.

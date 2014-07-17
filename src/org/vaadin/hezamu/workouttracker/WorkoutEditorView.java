@@ -64,10 +64,10 @@ public class WorkoutEditorView extends GridLayout {
 		addComponent(maxHR = new TextField("Max HR"));
 		maxHR.addValidator(new IntegerFieldValidator(60, 200));
 
-		addComponent(comment = new TextArea("Comment"), 0, 5, 1, 6);
+		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 5);
 		comment.setSizeFull();
 
-		addComponent(rating = new TextField("Rating"), 0, 4, 1, 4);
+		addComponent(rating = new TextField("Rating"), 0, 6, 1, 6);
 		rating.setSizeFull();
 		rating.setEnabled(false);
 

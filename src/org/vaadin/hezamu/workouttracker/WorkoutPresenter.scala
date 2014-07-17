@@ -45,9 +45,9 @@ class WorkoutPresenter {
 
         editor.clearFields
       }
-    }
 
-    updateRating
+      updateRating
+    }
 
     editor.clearButton.clickListeners += {
       editor.clearFields

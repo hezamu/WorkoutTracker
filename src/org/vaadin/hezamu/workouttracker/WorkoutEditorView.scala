@@ -22,7 +22,7 @@ class WorkoutEditorView extends GridLayout {
     caption = "Activity"
     required = true
     inputPrompt = "Required"
-    WorkoutPresenter.Activities foreach addItem
+    WorkoutPresenter.Activities.foreach(addItem)
   })
 
   val duration = add(new ValidatedTextField("Duration", 1, 600, true))
@@ -59,13 +59,10 @@ class WorkoutEditorView extends GridLayout {
     comment.value = ""
   }
 
-  def getDuration = getIntFieldValue(duration)
-  def getCalories = getIntFieldValue(calories)
-  def getAvgHR = getIntFieldValue(avgHR)
-  def getMaxHR = getIntFieldValue(maxHR)
-
-  private def getIntFieldValue(field: TextField, default: Int = 0) =
-    Try(Integer.parseInt(field.value.getOrElse(""))) getOrElse default
+  def getDuration = Try(Integer.parseInt(duration.value.getOrElse(""))) getOrElse 0
+  def getCalories = Try(Integer.parseInt(calories.value.getOrElse(""))) getOrElse 0
+  def getAvgHR = Try(Integer.parseInt(avgHR.value.getOrElse(""))) getOrElse 0
+  def getMaxHR = Try(Integer.parseInt(maxHR.value.getOrElse(""))) getOrElse 0
 }
 
 class ValidatedTextField(_caption: String, min: Int, max: Int, _required: Boolean = false) extends TextField {

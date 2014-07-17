@@ -21,16 +21,6 @@ public class Workout {
 		this.comment = comment;
 	}
 
-	public Workout() {
-		this.activity = "";
-		this.date = LocalDate.now();
-		this.duration = 0;
-		this.avgHR = 0;
-		this.maxHR = 0;
-		this.calories = 0;
-		this.comment = "";
-	}
-
 	public int monthAge() {
 		return (int) Period.between(date, LocalDate.now()).toTotalMonths();
 	}

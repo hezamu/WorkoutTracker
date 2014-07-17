@@ -25,7 +25,7 @@ public class WorkoutEditorView extends GridLayout {
 	final Button add, clear;
 
 	public WorkoutEditorView() {
-		super(2, 7);
+		super(2, 6);
 
 		setSpacing(true);
 
@@ -64,7 +64,7 @@ public class WorkoutEditorView extends GridLayout {
 		addComponent(maxHR = new TextField("Max HR"));
 		maxHR.addValidator(new IntegerFieldValidator(60, 200));
 
-		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 5);
+		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 4);
 		comment.setSizeFull();
 
 		addComponent(add = new Button("Add"));

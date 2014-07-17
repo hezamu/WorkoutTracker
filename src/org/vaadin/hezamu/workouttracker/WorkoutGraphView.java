@@ -24,7 +24,7 @@ public class WorkoutGraphView extends VerticalLayout {
 		setMargin(false);
 
 		addComponent(chart = new Chart());
-		chart.setHeight("580px");
+		chart.setHeight("506px");
 		chart.setWidth("700px");
 
 		Configuration conf = chart.getConfiguration();

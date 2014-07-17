@@ -14,14 +14,14 @@ public interface WorkoutDAO {
 	 * The result is sorted by age, and the current month is included as the
 	 * last element.
 	 */
-	Double[] getTotalKCal(int maxMonths);
+	Number[] getTotalKCal(int maxMonths);
 
 	/**
 	 * Get the monthly heart rate averages for the workouts in the X previous
 	 * months. The result is sorted by age, and the current month is included as
 	 * the last element.
 	 */
-	Double[] getAverageHR(int maxMonths);
+	Number[] getAverageHR(int maxMonths);
 
 	/**
 	 * Add a new workout.

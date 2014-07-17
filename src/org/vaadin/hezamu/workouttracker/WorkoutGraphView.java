@@ -71,7 +71,7 @@ public class WorkoutGraphView extends VerticalLayout {
 		conf.addSeries(hrSerie);
 	}
 
-	public void update(Double[] kcalData, Double[] hrData) {
+	public void update(Number[] kcalData, Number[] hrData) {
 		kcalSerie.setData(kcalData);
 		hrSerie.setData(hrData);
 		chart.drawChart();

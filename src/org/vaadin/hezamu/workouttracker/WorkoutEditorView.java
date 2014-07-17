@@ -19,7 +19,7 @@ public class WorkoutEditorView extends GridLayout {
 	final ComboBox activity;
 	final DateField date;
 	final TextField duration, avgHR, maxHR, calories;
-	final Label rating;
+	final Label title;
 	final TextArea comment;
 	final Button add, clear;
 
@@ -28,10 +28,10 @@ public class WorkoutEditorView extends GridLayout {
 
 		setSpacing(true);
 
-		Label title = new Label("New Workout");
+		addComponent(title = new Label("New Workout"), 0, 0, 1, 0);
+		title.setContentMode(ContentMode.HTML);
 		title.addStyleName(Reindeer.LABEL_H2);
 		title.setSizeUndefined();
-		addComponent(title, 0, 0, 1, 0);
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
 		addComponent(activity = new ComboBox("Activity"));
@@ -68,10 +68,6 @@ public class WorkoutEditorView extends GridLayout {
 
 		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 5);
 		comment.setSizeFull();
-
-		addComponent(rating = new Label("", ContentMode.HTML), 0, 6, 1, 6);
-		rating.setSizeUndefined();
-		setComponentAlignment(rating, Alignment.MIDDLE_CENTER);
 
 		addComponent(add = new Button("Add"));
 		add.addStyleName(Reindeer.BUTTON_DEFAULT);

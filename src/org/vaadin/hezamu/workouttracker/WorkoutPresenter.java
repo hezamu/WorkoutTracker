@@ -17,7 +17,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
-import com.vaadin.ui.themes.Reindeer;
 
 @SuppressWarnings("serial")
 public class WorkoutPresenter {
@@ -126,28 +125,19 @@ public class WorkoutPresenter {
 		List<String> invalidInputs = getInvalidInputNames();
 
 		if (!invalidInputs.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < invalidInputs.size(); ++i) {
-				sb.append(invalidInputs.get(i));
-				if (i < invalidInputs.size() - 1)
-					sb.append(", ");
-			}
-
-			editor.rating.setValue("Needed: " + sb.toString());
-			editor.rating.removeStyleName(Reindeer.LABEL_H1);
+			editor.title.setValue("New Workout");
 		} else {
 			int rating = WorkoutRatingLogic.calculateRating(editor.activity
 					.getValue().toString(), editor.getDuration(), editor
 					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
 					editor.comment.getValue());
 
-			StringBuilder stars = new StringBuilder();
+			StringBuilder stars = new StringBuilder("New Workout: ");
 			for (int i = 0; i < rating; ++i) {
 				stars.append(FontAwesome.STAR.getHtml());
 			}
 
-			editor.rating.setValue(stars.toString());
-			editor.rating.addStyleName(Reindeer.LABEL_H1);
+			editor.title.setValue(stars.toString());
 		}
 
 		editor.add.setEnabled(invalidInputs.isEmpty());

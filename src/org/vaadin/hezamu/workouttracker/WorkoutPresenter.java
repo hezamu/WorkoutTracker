@@ -2,7 +2,9 @@ package org.vaadin.hezamu.workouttracker;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
 import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
@@ -10,10 +12,12 @@ import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.themes.Reindeer;
 
 @SuppressWarnings("serial")
 public class WorkoutPresenter {
@@ -21,8 +25,15 @@ public class WorkoutPresenter {
 	final WorkoutGraphView graph;
 	private final WorkoutDAO dao;
 
-	public final static String[] ACTIVITIES = { "Cycling", "Walking",
-			"Running", "Gym", "Other" };
+	public static final Map<String, Integer> ACTIVITIES = new LinkedHashMap<String, Integer>() {
+		{
+			put("Cycling", 15);
+			put("Walking", 10);
+			put("Running", 20);
+			put("Gym", 15);
+			put("Other", 10);
+		}
+	};
 
 	public WorkoutPresenter() {
 		dao = new DummyWorkoutDAOImpl();
@@ -122,20 +133,24 @@ public class WorkoutPresenter {
 					sb.append(", ");
 			}
 
-			editor.rating.setValue("Missing/invalid: " + sb.toString());
+			editor.rating.setValue("Needed: " + sb.toString());
+			editor.rating.removeStyleName(Reindeer.LABEL_H1);
 		} else {
-			editor.rating.setValue("Rating: " + calculateRating());
+			int rating = WorkoutRatingLogic.calculateRating(editor.activity
+					.getValue().toString(), editor.getDuration(), editor
+					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
+					editor.comment.getValue());
+
+			StringBuilder stars = new StringBuilder();
+			for (int i = 0; i < rating; ++i) {
+				stars.append(FontAwesome.STAR.getHtml());
+			}
+
+			editor.rating.setValue(stars.toString());
+			editor.rating.addStyleName(Reindeer.LABEL_H1);
 		}
 
 		editor.add.setEnabled(invalidInputs.isEmpty());
-	}
-
-	private int calculateRating() {
-		if (getInvalidInputNames().isEmpty()) {
-			return 1;
-		}
-
-		return 0;
 	}
 
 	private List<String> getInvalidInputNames() {

@@ -3,6 +3,7 @@ package org.vaadin.hezamu.workouttracker;
 import java.util.Date;
 
 import com.vaadin.data.Validator;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -17,7 +18,8 @@ import com.vaadin.ui.themes.Reindeer;
 public class WorkoutEditorView extends GridLayout {
 	final ComboBox activity;
 	final DateField date;
-	final TextField duration, avgHR, maxHR, calories, rating;
+	final TextField duration, avgHR, maxHR, calories;
+	final Label rating;
 	final TextArea comment;
 	final Button add, clear;
 
@@ -33,7 +35,7 @@ public class WorkoutEditorView extends GridLayout {
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
 		addComponent(activity = new ComboBox("Activity"));
-		activity.addItems(WorkoutPresenter.ACTIVITIES);
+		activity.addItems(WorkoutPresenter.ACTIVITIES.keySet());
 		activity.setRequired(true);
 		activity.setInputPrompt("Required");
 
@@ -67,9 +69,9 @@ public class WorkoutEditorView extends GridLayout {
 		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 5);
 		comment.setSizeFull();
 
-		addComponent(rating = new TextField("Rating"), 0, 6, 1, 6);
-		rating.setSizeFull();
-		rating.setEnabled(false);
+		addComponent(rating = new Label("", ContentMode.HTML), 0, 6, 1, 6);
+		rating.setSizeUndefined();
+		setComponentAlignment(rating, Alignment.MIDDLE_CENTER);
 
 		addComponent(add = new Button("Add"));
 		add.addStyleName(Reindeer.BUTTON_DEFAULT);
@@ -87,6 +89,10 @@ public class WorkoutEditorView extends GridLayout {
 		avgHR.setValue("");
 		maxHR.setValue("");
 		comment.setValue("");
+	}
+
+	public int getDuration() {
+		return getIntFieldValue(duration);
 	}
 
 	public int getCalories() {

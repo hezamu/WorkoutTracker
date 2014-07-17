@@ -102,6 +102,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 	private List<Workout> generateDummyData() {
 		List<Workout> result = new ArrayList<>();
 
+		Object[] activities = WorkoutPresenter.ACTIVITIES.keySet().toArray();
 		Random rnd = new Random();
 
 		for (int year = 112; year <= 114; year++) {
@@ -114,11 +115,11 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 					int duration = rnd.nextInt(60) + 15;
 					double avgHr = 110 + rnd.nextDouble() * 15;
 
-					result.add(new Workout(WorkoutPresenter.ACTIVITIES[rnd
-							.nextInt(WorkoutPresenter.ACTIVITIES.length)],
-							new Date(year, month, rnd.nextInt(30) + 1),
-							duration, avgHr, avgHr + rnd.nextDouble() * 5,
-							(duration / 60) * rnd.nextInt(150) + 200, ""));
+					result.add(new Workout(activities[rnd
+							.nextInt(activities.length)].toString(), new Date(
+							year, month, rnd.nextInt(30) + 1), duration, avgHr,
+							avgHr + rnd.nextDouble() * 5, (duration / 60)
+									* rnd.nextInt(150) + 200, ""));
 				}
 			}
 		}

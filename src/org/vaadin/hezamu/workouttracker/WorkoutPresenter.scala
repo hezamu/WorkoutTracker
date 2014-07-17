@@ -5,6 +5,7 @@ import java.time.LocalDate
 import vaadin.scala._
 import java.time.LocalDateTime
 import java.time.ZoneId
+import com.vaadin.ui.themes.ValoTheme
 
 object WorkoutPresenter {
   val Activities = Array("Cycling", "Walking", "Running", "Gym", "Other");
@@ -40,7 +41,7 @@ class WorkoutPresenter {
           editor.getCalories, editor.getAvgHR,
           editor.getMaxHR);
 
-        //          graph.update(dao.getTotalKCal(12), dao.getAverageHR(12));
+        graph.update(dao.getTotalKCal(12), dao.getAverageHR(12));
 
         editor.clearFields
       }
@@ -58,10 +59,8 @@ class WorkoutPresenter {
     val invalidInputs = getInvalidInputNames
 
     editor.rating.value =
-      if (invalidInputs.nonEmpty)
-        "Missing/invalid: " + invalidInputs.mkString(",")
-      else
-        "Rating: " + calculateRating
+      if (invalidInputs.nonEmpty) "Needed: " + invalidInputs.mkString(", ")
+      else "Rating: " + calculateRating
 
     editor.addButton.enabled = invalidInputs.isEmpty
   }

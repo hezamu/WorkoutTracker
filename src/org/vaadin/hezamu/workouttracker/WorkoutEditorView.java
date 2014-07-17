@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -18,7 +19,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class WorkoutEditorView extends GridLayout {
 	final ComboBox activity;
 	final DateField date;
-	final TextField duration, avgHR, maxHR, calories, rating;
+	final TextField duration, avgHR, maxHR, calories;
+	final Label title;
 	final TextArea comment;
 	final Button add, clear;
 
@@ -27,15 +29,15 @@ public class WorkoutEditorView extends GridLayout {
 
 		setSpacing(true);
 
-		Label title = new Label("New Workout");
+		addComponent(title = new Label("New Workout"), 0, 0, 1, 0);
+		title.setContentMode(ContentMode.HTML);
 		title.addStyleName(ValoTheme.LABEL_H3);
 		title.addStyleName(ValoTheme.LABEL_BOLD);
 		title.setSizeUndefined();
-		addComponent(title, 0, 0, 1, 0);
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
 		addComponent(activity = new ComboBox("Activity"));
-		activity.addItems(WorkoutPresenter.ACTIVITIES);
+		activity.addItems(WorkoutPresenter.ACTIVITIES.keySet());
 		activity.setRequired(true);
 		activity.setInputPrompt("Required");
 
@@ -65,11 +67,6 @@ public class WorkoutEditorView extends GridLayout {
 		addComponent(comment = new TextArea("Comment"), 0, 4, 1, 5);
 		comment.setSizeFull();
 
-		addComponent(rating = new TextField("Rating"), 0, 6, 1, 6);
-		rating.setSizeFull();
-		rating.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
-		rating.setEnabled(false);
-
 		addComponent(add = new Button("Add"));
 		add.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		add.setSizeFull();
@@ -86,6 +83,10 @@ public class WorkoutEditorView extends GridLayout {
 		avgHR.setValue("");
 		maxHR.setValue("");
 		comment.setValue("");
+	}
+
+	public int getDuration() {
+		return getIntFieldValue(duration);
 	}
 
 	public int getCalories() {

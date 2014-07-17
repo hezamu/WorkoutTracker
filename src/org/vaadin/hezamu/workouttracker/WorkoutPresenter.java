@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -14,16 +15,25 @@ import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 
+@SuppressWarnings("serial")
 public class WorkoutPresenter {
 	final WorkoutEditorView editor;
 	final WorkoutGraphView graph;
 	private final WorkoutDAO dao;
 
-	public final static String[] ACTIVITIES = { "Cycling", "Walking",
-			"Running", "Gym", "Other" };
+	public static final Map<String, Integer> ACTIVITIES = new LinkedHashMap<String, Integer>() {
+		{
+			put("Cycling", 15);
+			put("Walking", 10);
+			put("Running", 20);
+			put("Gym", 15);
+			put("Other", 10);
+		}
+	};
 
 	public WorkoutPresenter() {
 		dao = new DummyWorkoutDAOImpl();
@@ -80,21 +90,22 @@ public class WorkoutPresenter {
 		List<String> invalidInputs = getInvalidInputNames();
 
 		if (!invalidInputs.isEmpty()) {
-			editor.rating.setValue("Missing/invalid: "
-					+ invalidInputs.stream().collect(Collectors.joining(", ")));
+			editor.title.setValue("New Workout");
 		} else {
-			editor.rating.setValue("Rating: " + calculateRating());
+			int rating = WorkoutRatingLogic.calculateRating(editor.activity
+					.getValue().toString(), editor.getDuration(), editor
+					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
+					editor.comment.getValue());
+
+			StringBuilder stars = new StringBuilder("New Workout: ");
+			for (int i = 0; i < rating; ++i) {
+				stars.append(FontAwesome.STAR.getHtml());
+			}
+
+			editor.title.setValue(stars.toString());
 		}
 
 		editor.add.setEnabled(invalidInputs.isEmpty());
-	}
-
-	private int calculateRating() {
-		if (getInvalidInputNames().isEmpty()) {
-			return 1;
-		}
-
-		return 0;
 	}
 
 	/* @formatter:off */

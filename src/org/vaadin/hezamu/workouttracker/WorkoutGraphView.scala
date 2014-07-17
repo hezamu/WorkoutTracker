@@ -9,7 +9,7 @@ import com.vaadin.server.Sizeable.Unit
 
 class WorkoutGraphView extends VerticalLayout {
   val chart = new Chart {
-    setHeight(580, Unit.PIXELS)
+    setHeight(506, Unit.PIXELS)
     setWidth(700, Unit.PIXELS)
   }
 

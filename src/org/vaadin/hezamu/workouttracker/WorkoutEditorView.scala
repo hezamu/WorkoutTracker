@@ -15,8 +15,9 @@ class WorkoutEditorView extends GridLayout {
   rows = 7
   spacing = true
 
-  add(Label("New Workout", undefSize = true, styles = Vector(ValoTheme.LABEL_H3, ValoTheme.LABEL_BOLD)),
+  val title = add(Label("New Workout", undefSize = true, styles = Vector(ValoTheme.LABEL_H3, ValoTheme.LABEL_BOLD)),
     0, 0, 1, 0, alignment = Alignment.TopCenter)
+  title.contentMode = Label.ContentMode.Html
 
   val activity = add(new ComboBox {
     caption = "Activity"
@@ -42,9 +43,6 @@ class WorkoutEditorView extends GridLayout {
   val maxHR = add(new ValidatedTextField("Max HR", 50, 250))
 
   val comment = add(TextArea("Comment", fullSize = true), 0, 4, 1, 4)
-
-  val rating = add(TextField("Rating", fullSize = true,
-    style = Some(ValoTheme.TEXTFIELD_BORDERLESS)), 0, 5, 1, 6)
 
   val addButton = add(Button("Add", true, style = Some(ValoTheme.BUTTON_PRIMARY)))
   val clearButton = add(Button("Clear", true))

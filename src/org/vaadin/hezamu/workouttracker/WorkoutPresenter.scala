@@ -6,6 +6,7 @@ import vaadin.scala._
 import java.time.LocalDateTime
 import java.time.ZoneId
 import com.vaadin.ui.themes.ValoTheme
+import vaadin.scala.server.FontAwesome
 
 object WorkoutPresenter {
   val Activities = Array("Cycling", "Walking", "Running", "Gym", "Other");
@@ -58,19 +59,24 @@ class WorkoutPresenter {
   private def updateRating {
     val invalidInputs = getInvalidInputNames
 
-    editor.rating.value =
-      if (invalidInputs.nonEmpty) "Needed: " + invalidInputs.mkString(", ")
-      else "Rating: " + calculateRating
+    if (invalidInputs.nonEmpty) editor.title.value = "New Workout"
+    else {
+      val rating = WorkoutRatingLogic.calculateRating(editor.activity.value.get.toString,
+        editor.getDuration, editor.getCalories, editor.getAvgHR, editor.getMaxHR,
+        editor.comment.value.get)
+
+      val stars = for (i <- 1 to rating) yield FontAwesome.Star.html
+
+      editor.title.value = "New Workout: " + stars.mkString
+    }
 
     editor.addButton.enabled = invalidInputs.isEmpty
   }
 
-  // TODO!
-  def calculateRating =
-    if (getInvalidInputNames.isEmpty) 1 else 0
-
   private def getInvalidInputNames =
-    editor.components.filter(fieldNotValidating).flatMap(_.caption)
+    editor.components
+      .filter(fieldNotValidating)
+      .flatMap(_.caption)
 
   def fieldNotValidating(c: Component) = c match {
     case f: Validatable => !f.valid

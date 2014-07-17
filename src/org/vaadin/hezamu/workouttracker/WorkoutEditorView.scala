@@ -12,7 +12,7 @@ import scala.util.Try
 
 class WorkoutEditorView extends GridLayout {
   columns = 2
-  rows = 7
+  rows = 6
   spacing = true
 
   val title = add(Label("New Workout", undefSize = true, styles = Vector(ValoTheme.LABEL_H3, ValoTheme.LABEL_BOLD)),

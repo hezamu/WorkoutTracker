@@ -33,10 +33,10 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
 			if (w.monthAge() < md) {
 				result.add(accu);
-				accu = w.getCalories();
+				accu = w.calories();
 				md--;
 			} else {
-				accu += w.getCalories();
+				accu += w.calories();
 			}
 		}
 
@@ -54,7 +54,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		double accu = 0;
 		int md = 11;
 		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
-			if (w.getAvgHR() == 0)
+			if (w.avgHR() == 0)
 				continue;
 
 			if (w.monthAge() < md) {
@@ -64,12 +64,12 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 					result.add(accu / count);
 				}
 
-				accu = w.getAvgHR();
+				accu = w.avgHR();
 				count = 1;
 				md--;
 
 			} else {
-				accu += w.getAvgHR();
+				accu += w.avgHR();
 				count++;
 			}
 		}

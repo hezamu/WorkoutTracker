@@ -28,10 +28,12 @@ public class WorkoutGraphView extends VerticalLayout {
 		chart.setWidth("700px");
 
 		Configuration conf = chart.getConfiguration();
-
 		conf.getChart().setZoomType(ZoomType.XY);
+		conf.setTitle("Heart rate vs. burned calories");
 
-		conf.setTitle("Progress");
+		Tooltip tooltip = new Tooltip();
+		tooltip.setFormatter("this.x +': '+ this.y + (this.series.name == 'Burned calories' ? ' kcal' : ' BPM')");
+		conf.setTooltip(tooltip);
 
 		XAxis x = new XAxis();
 		x.setCategories("Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
@@ -52,10 +54,6 @@ public class WorkoutGraphView extends VerticalLayout {
 		style.setColor(new SolidColor("#4572A7"));
 		snd.getTitle().setStyle(style);
 		conf.addyAxis(snd);
-
-		Tooltip tooltip = new Tooltip();
-		tooltip.setFormatter("this.x +': '+ this.y + (this.series.name == 'Burned calories' ? ' calories' : ' BPM')");
-		conf.setTooltip(tooltip);
 
 		kcalSerie = new DataSeries();
 		kcalSerie.setPlotOptions(new PlotOptionsColumn());

@@ -1,7 +1,6 @@
 package org.vaadin.hezamu.workouttracker.data;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -32,9 +31,6 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		double accu = 0;
 		int md = 11;
 		for (Workout w : findByAge(maxMonths).toArray(Workout[]::new)) {
-			System.out.println("Found workout on "
-					+ w.getDate().format(DateTimeFormatter.BASIC_ISO_DATE));
-
 			if (w.monthAge() < md) {
 				result.add(accu);
 				accu = w.getCalories();

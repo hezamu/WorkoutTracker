@@ -20,16 +20,6 @@ public class Workout {
 		this.comment = comment;
 	}
 
-	public Workout() {
-		this.activity = "";
-		this.date = new Date();
-		this.duration = 0;
-		this.avgHR = 0;
-		this.maxHR = 0;
-		this.calories = 0;
-		this.comment = "";
-	}
-
 	public int monthAge() {
 		return (new Date().getYear() - date.getYear()) * 12
 				+ (new Date().getMonth() - date.getMonth());

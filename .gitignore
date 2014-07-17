@@ -11,3 +11,4 @@ GWT*
 *.launch
 *.db
 /build
+.tmpBin/

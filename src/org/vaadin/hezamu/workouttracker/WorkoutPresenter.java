@@ -138,7 +138,6 @@ public class WorkoutPresenter {
 		return 0;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private List<String> getInvalidInputNames() {
 		List<String> result = new ArrayList<>();
 

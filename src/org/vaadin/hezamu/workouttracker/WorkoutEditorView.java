@@ -51,9 +51,10 @@ public class WorkoutEditorView extends GridLayout {
 		date.addValidator(new Validator() {
 			@Override
 			public void validate(Object value) throws InvalidValueException {
-				if (value instanceof Date && new Date().before((Date) value))
+				if (value instanceof Date && new Date().before((Date) value)) {
 					throw new InvalidValueException(
 							"Date can't be in the future");
+				}
 			}
 		});
 

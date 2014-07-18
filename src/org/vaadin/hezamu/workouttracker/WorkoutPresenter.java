@@ -1,9 +1,7 @@
 package org.vaadin.hezamu.workouttracker;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
@@ -97,7 +95,7 @@ public class WorkoutPresenter {
 		editor.add.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				if (getInvalidInputNames().isEmpty()) {
+				if (areInputsValid()) {
 					dao.add(editor.activity.getValue().toString(),
 							Integer.parseInt(editor.duration.getValue()),
 							editor.date.getValue(), editor.getCalories(),
@@ -122,11 +120,9 @@ public class WorkoutPresenter {
 	}
 
 	private void updateRating() {
-		List<String> invalidInputs = getInvalidInputNames();
+		boolean validInputs = areInputsValid();
 
-		if (!invalidInputs.isEmpty()) {
-			editor.title.setValue("New Workout");
-		} else {
+		if (validInputs) {
 			int rating = WorkoutRatingLogic.calculateRating(editor.activity
 					.getValue().toString(), editor.getDuration(), editor
 					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
@@ -138,22 +134,22 @@ public class WorkoutPresenter {
 			}
 
 			editor.title.setValue(stars.toString());
+		} else {
+			editor.title.setValue("New Workout");
 		}
 
-		editor.add.setEnabled(invalidInputs.isEmpty());
+		editor.add.setEnabled(validInputs);
 	}
 
-	private List<String> getInvalidInputNames() {
-		List<String> result = new ArrayList<>();
-
+	private boolean areInputsValid() {
 		Component c = null;
 		for (Iterator<Component> iter = editor.iterator(); iter.hasNext(); c = iter
 				.next()) {
 			if (fieldNotValidating(c))
-				result.add(c.getCaption());
+				return false;
 		}
 
-		return result;
+		return true;
 	}
 
 	@SuppressWarnings("rawtypes")

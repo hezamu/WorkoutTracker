@@ -3,11 +3,8 @@ package org.vaadin.hezamu.workouttracker;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
@@ -58,7 +55,7 @@ public class WorkoutPresenter {
 		editor.maxHR.addValueChangeListener(this::updateRating);
 
 		editor.add.addClickListener(event -> {
-			if (getInvalidInputNames().isEmpty()) {
+			if (areInputsValid()) {
 				LocalDate date = LocalDateTime.ofInstant(
 						editor.date.getValue().toInstant(),
 						ZoneId.systemDefault()).toLocalDate();
@@ -87,11 +84,9 @@ public class WorkoutPresenter {
 	}
 
 	private void updateRating() {
-		List<String> invalidInputs = getInvalidInputNames();
+		boolean validInputs = areInputsValid();
 
-		if (!invalidInputs.isEmpty()) {
-			editor.title.setValue("New Workout");
-		} else {
+		if (validInputs) {
 			int rating = WorkoutRatingLogic.calculateRating(editor.activity
 					.getValue().toString(), editor.getDuration(), editor
 					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
@@ -103,18 +98,18 @@ public class WorkoutPresenter {
 			}
 
 			editor.title.setValue(stars.toString());
+		} else {
+			editor.title.setValue("New Workout");
 		}
 
-		editor.add.setEnabled(invalidInputs.isEmpty());
+		editor.add.setEnabled(validInputs);
 	}
 
 	/* @formatter:off */
-	private List<String> getInvalidInputNames() {
-		Stream<String> s = StreamSupport.stream(editor.spliterator(), true)
+	private boolean areInputsValid() {
+		return StreamSupport.stream(editor.spliterator(), true)
 				.filter(c -> fieldNotValidating(c))
-				.map(c -> c.getCaption());
-
-		return Arrays.asList(s.toArray(String[]::new));
+				.count() > 0;
 	}
 	/* @formatter:on */
 

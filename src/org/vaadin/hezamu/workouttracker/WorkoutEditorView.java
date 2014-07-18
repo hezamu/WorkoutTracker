@@ -51,8 +51,9 @@ public class WorkoutEditorView extends GridLayout {
 		date.setRequired(true);
 		date.setDateFormat("dd.MM.yyyy");
 		date.addValidator(value -> {
-			if (value instanceof Date && new Date().before((Date) value))
+			if (value instanceof Date && new Date().before((Date) value)) {
 				throw new InvalidValueException("Date can't be in the future");
+			}
 		});
 
 		addComponent(calories = new TextField("Calories"));

@@ -114,9 +114,9 @@ public class WorkoutPresenter {
 	/* @formatter:on */
 
 	@SuppressWarnings("rawtypes")
-	private boolean fieldNotValidating(Component c) {
-		if (c instanceof Field) {
-			Field field = (Field) c;
+	private boolean fieldNotValidating(Component component) {
+		if (component instanceof Field) {
+			Field field = (Field) component;
 
 			try {
 				field.validate();

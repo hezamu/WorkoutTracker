@@ -142,10 +142,10 @@ public class WorkoutPresenter {
 	}
 
 	private boolean areInputsValid() {
-		Component c = null;
-		for (Iterator<Component> iter = editor.iterator(); iter.hasNext(); c = iter
+		Component component = null;
+		for (Iterator<Component> iter = editor.iterator(); iter.hasNext(); component = iter
 				.next()) {
-			if (fieldNotValidating(c))
+			if (fieldNotValidating(component))
 				return false;
 		}
 
@@ -153,9 +153,9 @@ public class WorkoutPresenter {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private boolean fieldNotValidating(Component c) {
-		if (c instanceof Field) {
-			Field field = (Field) c;
+	private boolean fieldNotValidating(Component component) {
+		if (component instanceof Field) {
+			Field field = (Field) component;
 
 			try {
 				field.validate();

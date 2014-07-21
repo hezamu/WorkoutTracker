@@ -107,8 +107,8 @@ public class WorkoutPresenter {
 
 	/* @formatter:off */
 	private boolean areInputsValid() {
-		return StreamSupport.stream(editor.spliterator(), true)
-				.anyMatch(component -> fieldNotValidating(component));
+		return !StreamSupport.stream(editor.spliterator(), true)
+			.anyMatch(this::fieldNotValidating);
 	}
 	/* @formatter:on */
 

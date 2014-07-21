@@ -25,12 +25,7 @@ public class WorkoutRatingLogic {
 	}
 
 	private static int activityScore(String activity) {
-		if (activity == "Walking" || activity == "Other")
-			return 25;
-		else if (activity == "Cyckling" || activity == "Gym")
-			return 50;
-		else
-			return 100; // Running
+		return WorkoutPresenter.ACTIVITIES.get(activity);
 	}
 
 	private static int durationScore(int duration) {

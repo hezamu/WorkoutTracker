@@ -104,8 +104,8 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 					int duration = rnd.nextInt(60) + 15;
 					double avgHr = 110 + rnd.nextDouble() * 15;
 
-					result.add(new Workout(WorkoutPresenter.Activities()[rnd
-							.nextInt(WorkoutPresenter.Activities().length)],
+					result.add(new Workout(WorkoutPresenter.activities()[rnd
+							.nextInt(WorkoutPresenter.activities().length)],
 							date, duration, avgHr,
 							avgHr + rnd.nextDouble() * 5, (duration / 60)
 									* rnd.nextInt(150) + 200, ""));

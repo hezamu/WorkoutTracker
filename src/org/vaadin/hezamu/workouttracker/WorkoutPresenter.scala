@@ -9,7 +9,9 @@ import com.vaadin.ui.themes.ValoTheme
 import vaadin.scala.server.FontAwesome
 
 object WorkoutPresenter {
-  val Activities = Array("Cycling", "Walking", "Running", "Gym", "Other");
+  private val Activities: Map[String, Integer] = Map(("Cycling", 50), ("Walking", 25), ("Running", 100), ("Gym", 40), ("Other", 25));
+  def activityScore(activity: String) = Activities.getOrElse(activity, 25).asInstanceOf[Integer]
+  def activities = Activities.keys.toArray[String]
 }
 
 class WorkoutPresenter {

@@ -2,8 +2,6 @@ package org.vaadin.hezamu.workouttracker;
 
 /**
  * Bogus rules to calculating 1-5 star rating for a workout.
- * 
- * @author henrimuurimaa
  */
 public class WorkoutRatingLogic {
 	public static int calculateRating(String activity, int duration,
@@ -25,12 +23,7 @@ public class WorkoutRatingLogic {
 	}
 
 	private static int activityScore(String activity) {
-		if (activity == "Walking" || activity == "Other")
-			return 25;
-		else if (activity == "Cyckling" || activity == "Gym")
-			return 50;
-		else
-			return 100; // Running
+		return WorkoutPresenter.activityScore(activity);
 	}
 
 	private static int durationScore(int duration) {

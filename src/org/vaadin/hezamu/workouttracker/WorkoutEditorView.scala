@@ -23,7 +23,7 @@ class WorkoutEditorView extends GridLayout {
     caption = "Activity"
     required = true
     inputPrompt = "Required"
-    WorkoutPresenter.Activities.foreach(addItem)
+    WorkoutPresenter.activities.foreach(addItem)
   })
 
   val duration = add(new ValidatedTextField("Duration", 1, 600, true))

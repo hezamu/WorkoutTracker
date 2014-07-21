@@ -12,7 +12,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class WorkoutEditorView extends GridLayout {
@@ -30,7 +30,8 @@ public class WorkoutEditorView extends GridLayout {
 
 		addComponent(title = new Label("New Workout"), 0, 0, 1, 0);
 		title.setContentMode(ContentMode.HTML);
-		title.addStyleName(Reindeer.LABEL_H2);
+		title.addStyleName(ValoTheme.LABEL_H3);
+		title.addStyleName(ValoTheme.LABEL_BOLD);
 		title.setSizeUndefined();
 		setComponentAlignment(title, Alignment.TOP_CENTER);
 
@@ -71,7 +72,7 @@ public class WorkoutEditorView extends GridLayout {
 		comment.setSizeFull();
 
 		addComponent(add = new Button("Add"));
-		add.addStyleName(Reindeer.BUTTON_DEFAULT);
+		add.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		add.setSizeFull();
 
 		addComponent(clear = new Button("Clear"));

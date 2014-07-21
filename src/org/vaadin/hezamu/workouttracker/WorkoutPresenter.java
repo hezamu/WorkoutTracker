@@ -24,11 +24,11 @@ public class WorkoutPresenter {
 
 	public static final Map<String, Integer> ACTIVITIES = new LinkedHashMap<String, Integer>() {
 		{
-			put("Cycling", 15);
-			put("Walking", 10);
-			put("Running", 20);
-			put("Gym", 15);
-			put("Other", 10);
+			put("Cycling", 50);
+			put("Walking", 25);
+			put("Running", 100);
+			put("Gym", 40);
+			put("Other", 25);
 		}
 	};
 

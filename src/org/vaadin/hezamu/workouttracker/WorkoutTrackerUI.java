@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 @Theme("valo")
 public class WorkoutTrackerUI extends UI {
+
 	@Override
 	protected void init(VaadinRequest request) {
 		// Setup the root layout of the UI

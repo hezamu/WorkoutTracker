@@ -34,7 +34,7 @@ class WorkoutPresenter {
     editor.maxHR.valueChangeListeners += updateRating
 
     editor.addButton.clickListeners += {
-      if (getInvalidInputNames.isEmpty) {
+      if (areInputsValid) {
         val date = LocalDateTime.ofInstant(
           editor.date.value.get.toInstant,
           ZoneId.systemDefault).toLocalDate
@@ -59,10 +59,9 @@ class WorkoutPresenter {
   }
 
   private def updateRating {
-    val invalidInputs = getInvalidInputNames
+    val validInputs = areInputsValid
 
-    if (invalidInputs.nonEmpty) editor.title.value = "New Workout"
-    else {
+    if (validInputs) {
       val rating = WorkoutRatingLogic.calculateRating(editor.activity.value.get.toString,
         editor.getDuration, editor.getCalories, editor.getAvgHR, editor.getMaxHR,
         editor.comment.value.get)
@@ -70,15 +69,14 @@ class WorkoutPresenter {
       val stars = for (i <- 1 to rating) yield FontAwesome.Star.html
 
       editor.title.value = "New Workout: " + stars.mkString
+    } else {
+      editor.title.value = "New Workout"
     }
 
-    editor.addButton.enabled = invalidInputs.isEmpty
+    editor.addButton.enabled = validInputs
   }
 
-  private def getInvalidInputNames =
-    editor.components
-      .filter(fieldNotValidating)
-      .flatMap(_.caption)
+  private def areInputsValid = !editor.components.exists(fieldNotValidating)
 
   def fieldNotValidating(c: Component) = c match {
     case f: Validatable => !f.valid

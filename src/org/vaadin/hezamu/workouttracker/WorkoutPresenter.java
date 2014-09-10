@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
@@ -92,12 +94,11 @@ public class WorkoutPresenter {
 					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
 					editor.comment.getValue());
 
-			StringBuilder stars = new StringBuilder("New Workout: ");
-			for (int i = 0; i < rating; ++i) {
-				stars.append(FontAwesome.STAR.getHtml());
-			}
+			String stars = IntStream.range(0, rating)
+					.mapToObj(r -> FontAwesome.STAR.getHtml())
+					.collect(Collectors.joining(""));
 
-			editor.title.setValue(stars.toString());
+			editor.title.setValue("New Workout: " + stars);
 		} else {
 			editor.title.setValue("New Workout");
 		}

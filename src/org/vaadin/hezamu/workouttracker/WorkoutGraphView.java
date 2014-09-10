@@ -32,12 +32,12 @@ public class WorkoutGraphView extends VerticalLayout {
 		conf.setTitle("Heart rate vs. burned calories");
 
 		Tooltip tooltip = new Tooltip();
-		tooltip.setFormatter("this.x +': '+ this.y + (this.series.name == 'Burned calories' ? ' kcal' : ' BPM')");
+		tooltip.setFormatter("this.x +': '+ this.y.toFixed(1) + (this.series.name == 'Burned calories' ? ' kcal' : ' BPM')");
 		conf.setTooltip(tooltip);
 
 		XAxis x = new XAxis();
-		x.setCategories("Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
-				"Apr", "May", "Jun", "Jul");
+		x.setCategories("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr",
+				"May", "Jun", "Jul", "Aug");
 		conf.addxAxis(x);
 
 		YAxis primary = new YAxis();

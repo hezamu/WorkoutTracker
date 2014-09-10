@@ -42,9 +42,7 @@ public class WorkoutTrackerUI extends UI {
 
 		// Create a presenter and setup the views
 		final WorkoutPresenter presenter = new WorkoutPresenter();
-
 		view.addComponent(presenter.editor);
-
 		view.addComponent(presenter.graph);
 		view.setExpandRatio(presenter.graph, 1);
 	}

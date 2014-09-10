@@ -36,8 +36,8 @@ public class WorkoutGraphView extends VerticalLayout {
 		conf.setTooltip(tooltip);
 
 		XAxis x = new XAxis();
-		x.setCategories("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr",
-				"May", "Jun", "Jul", "Aug");
+		x.setCategories("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May",
+				"Jun", "Jul", "Aug", "Sep", "kk", "kk");
 		conf.addxAxis(x);
 
 		YAxis primary = new YAxis();

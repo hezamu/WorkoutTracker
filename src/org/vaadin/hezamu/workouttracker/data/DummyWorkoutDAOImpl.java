@@ -107,7 +107,7 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 
 		for (int year = 112; year <= 114; year++) {
 			for (int month = 0; month <= 11; month++) {
-				if (year == 114 && month > 6)
+				if (year == 114 && month > 8)
 					break;
 
 				int count = rnd.nextInt(7) + 3;

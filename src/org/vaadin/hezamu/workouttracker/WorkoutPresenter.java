@@ -3,14 +3,19 @@ package org.vaadin.hezamu.workouttracker;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
+import org.vaadin.hezamu.rx.RxVaadin;
 import org.vaadin.hezamu.workouttracker.data.DummyWorkoutDAOImpl;
 import org.vaadin.hezamu.workouttracker.data.WorkoutDAO;
 
-import com.vaadin.data.Property.ValueChangeEvent;
+import rx.Observable;
+
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
@@ -39,21 +44,14 @@ public class WorkoutPresenter {
 
 		editor = new WorkoutEditorView();
 
-		setupEditorListeners();
+		setupButtonListeners();
+
+		setupObservableLogic();
 
 		graph.update(dao.getTotalKCal(12), dao.getAverageHR(12));
-
-		updateRating();
 	}
 
-	private void setupEditorListeners() {
-		editor.date.addValueChangeListener(this::updateRating);
-		editor.activity.addValueChangeListener(this::updateRating);
-		editor.duration.addValueChangeListener(this::updateRating);
-		editor.calories.addValueChangeListener(this::updateRating);
-		editor.avgHR.addValueChangeListener(this::updateRating);
-		editor.maxHR.addValueChangeListener(this::updateRating);
-
+	private void setupButtonListeners() {
 		editor.add.addClickListener(event -> {
 			if (areInputsValid()) {
 				LocalDate date = LocalDateTime.ofInstant(
@@ -69,40 +67,44 @@ public class WorkoutPresenter {
 
 				editor.clearValues();
 			}
-
-			updateRating();
 		});
 
 		editor.clear.addClickListener(event -> {
 			editor.clearValues();
-			updateRating();
 		});
 	}
 
-	private void updateRating(ValueChangeEvent ignored) {
-		updateRating();
-	}
+	private void setupObservableLogic() {
+		Observable<String> activities = RxVaadin.valuesWithDefault(
+				editor.activity, null);
+		Observable<String> durations = RxVaadin.valuesWithDefault(
+				editor.duration, "");
+		Observable<Date> dates = RxVaadin.valuesWithDefault(editor.date,
+				editor.date.getValue());
+		Observable<String> calories = RxVaadin.valuesWithDefault(
+				editor.calories, "");
+		Observable<String> avgHRs = RxVaadin
+				.valuesWithDefault(editor.avgHR, "");
+		Observable<String> maxHRs = RxVaadin
+				.valuesWithDefault(editor.maxHR, "");
+		Observable<String> comments = RxVaadin.valuesWithDefault(
+				editor.comment, "");
 
-	private void updateRating() {
-		boolean validInputs = areInputsValid();
+		Observable<Integer> ratings = WorkoutRatingLogic.ratings(activities,
+				durations, dates, calories, avgHRs, maxHRs, comments);
 
-		if (validInputs) {
-			int rating = WorkoutRatingLogic.calculateRating(editor.activity
-					.getValue().toString(), editor.getDuration(), editor
-					.getCalories(), editor.getAvgHR(), editor.getMaxHR(),
-					editor.comment.getValue());
-
-			StringBuilder stars = new StringBuilder("New Workout: ");
-			for (int i = 0; i < rating; ++i) {
-				stars.append(FontAwesome.STAR.getHtml());
+		ratings.subscribe(rating -> {
+			if (rating != null) {
+				String stars = IntStream.range(0, rating)
+						.mapToObj(r -> FontAwesome.STAR.getHtml())
+						.collect(Collectors.joining(""));
+				editor.title.setValue("New Workout: " + stars);
+			} else {
+				editor.title.setValue("New Workout");
 			}
 
-			editor.title.setValue(stars.toString());
-		} else {
-			editor.title.setValue("New Workout");
-		}
-
-		editor.add.setEnabled(validInputs);
+			editor.add.setEnabled(rating != null);
+		});
 	}
 
 	/* @formatter:off */

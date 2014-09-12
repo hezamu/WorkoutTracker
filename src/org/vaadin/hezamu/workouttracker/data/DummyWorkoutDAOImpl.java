@@ -1,11 +1,12 @@
 package org.vaadin.hezamu.workouttracker.data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.vaadin.hezamu.workouttracker.WorkoutPresenter;
 
@@ -98,37 +99,39 @@ public class DummyWorkoutDAOImpl implements WorkoutDAO {
 		return result;
 	}
 
-	@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	private List<Workout> generateDummyData() {
 		List<Workout> result = new ArrayList<>();
 
 		Object[] activities = WorkoutPresenter.ACTIVITIES.keySet().toArray();
 		Random rnd = new Random();
 
-		for (int year = 112; year <= 114; year++) {
-			for (int month = 0; month <= 11; month++) {
-				if (year == 114 && month > 8)
-					break;
+		LocalDate now = LocalDate.now();
 
-				int count = rnd.nextInt(7) + 3;
-				for (int i = 0; i < count; ++i) {
+		/* @formatter:off */
+		IntStream.range(now.getYear() - 2, now.getYear() + 1).forEach(year -> {
+			IntStream.range(1, 13).forEach(month -> {
+				IntStream.range(0, rnd.nextInt(7) + 3).forEach(count -> {
 					int duration = rnd.nextInt(60) + 15;
 					double avgHr = 110 + rnd.nextDouble() * 15;
+					LocalDate date = LocalDate.of(year, month, 
+						rnd.nextInt(LocalDate.of(year, month, 1).lengthOfMonth()) + 1);
 
-					result.add(new Workout(activities[rnd
-							.nextInt(activities.length)].toString(), new Date(
-							year, month, rnd.nextInt(30) + 1), duration, avgHr,
-							avgHr + rnd.nextDouble() * 5, (duration / 60)
-									* rnd.nextInt(150) + 200, ""));
-				}
-			}
-		}
+					if(date.isBefore(now)) {
+						result.add(new Workout(activities[rnd.nextInt(activities.length)].toString(),
+							date, duration, avgHr, avgHr + rnd.nextDouble() * 5,
+							(duration / 60) * rnd.nextInt(150) + 200, ""));
+					}
+				});
+			});
+		});
+		/* @formatter:on */
 
 		return result;
 	}
 
 	@Override
-	public void add(String activity, int minutes, Date date, int calories,
+	public void add(String activity, int minutes, LocalDate date, int calories,
 			double avgHR, double maxHR) {
 		workouts.add(new Workout(activity, date, minutes, avgHR, maxHR,
 				calories, ""));

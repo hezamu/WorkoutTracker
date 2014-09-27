@@ -63,6 +63,7 @@ class WorkoutEditorView extends GridLayout {
   def getMaxHR = Try(Integer.parseInt(maxHR.value.getOrElse(""))) getOrElse 0
 }
 
+// Vaadin supports JSR 303 Java Bean Validation API as well
 class ValidatedTextField(_caption: String, min: Int, max: Int, _required: Boolean = false) extends TextField {
   this.caption = _caption
   this.required = _required

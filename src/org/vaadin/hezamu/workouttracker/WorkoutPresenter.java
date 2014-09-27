@@ -75,6 +75,7 @@ public class WorkoutPresenter {
 	}
 
 	private void setupObservableLogic() {
+		// First, convert input fields to Observables
 		Observable<String> activities = RxVaadin.valuesWithDefault(
 				editor.activity, null);
 		Observable<String> durations = RxVaadin.valuesWithDefault(
@@ -90,21 +91,31 @@ public class WorkoutPresenter {
 		Observable<String> comments = RxVaadin.valuesWithDefault(
 				editor.comment, "");
 
+		// Combine the values emitted by these Observables to a single new
+		// Observable that emits Integer ratings based on them.
 		Observable<Integer> ratings = WorkoutRatingLogic.ratings(activities,
 				durations, dates, calories, avgHRs, maxHRs, comments);
 
-		ratings.subscribe(rating -> {
-			if (rating != null) {
-				String stars = IntStream.range(0, rating)
-						.mapToObj(r -> FontAwesome.STAR.getHtml())
-						.collect(Collectors.joining(""));
-				editor.title.setValue("New Workout: " + stars);
+		// Compose a new Observable that emits the font icon strings
+		// corresponding to the the ratings
+		Observable<String> ratingStrings = ratings.map(rating -> {
+			if (rating == null) {
+				return "New Workout"; // No stars if required fields not ok
 			} else {
-				editor.title.setValue("New Workout");
+				return IntStream.range(0, rating)
+						.mapToObj(i -> FontAwesome.STAR.getHtml())
+						.collect(Collectors.joining("", "New Workout: ", ""));
 			}
-
-			editor.add.setEnabled(rating != null);
 		});
+
+		// Make the label set its value every time the string Observable
+		// emits a value
+		RxVaadin.follow(editor.title, ratingStrings);
+
+		// Make the add button enabled or disabled based on if the rating
+		// calculation was successful or not
+		ratings.map(i -> i).subscribe(
+				rating -> editor.add.setEnabled(rating != null));
 	}
 
 	/* @formatter:off */

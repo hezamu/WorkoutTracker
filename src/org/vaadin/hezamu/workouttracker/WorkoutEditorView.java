@@ -110,6 +110,7 @@ public class WorkoutEditorView extends GridLayout {
 		}
 	}
 
+	// Vaadin supports JSR 303 Java Bean Validation API as well
 	private class IntegerFieldValidator implements Validator {
 		private final int min, max;
 

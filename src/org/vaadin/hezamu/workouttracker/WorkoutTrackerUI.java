@@ -25,7 +25,7 @@ public class WorkoutTrackerUI extends UI {
 
 		setContent(layout);
 
-		// Setup the app title
+		// Setup the app title, use a font icon as the "logo"
 		final Label title = new Label("Workout Tracker "
 				+ FontAwesome.SIGNAL.getHtml(), ContentMode.HTML);
 		title.setSizeUndefined();

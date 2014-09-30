@@ -12,3 +12,5 @@ GWT*
 *.db
 /build
 .tmpBin
+*.iml
+.idea

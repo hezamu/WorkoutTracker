@@ -1,22 +1,21 @@
 package org.vaadin.hezamu.workouttracker
 
-import vaadin.scala._
-import com.vaadin.addon.charts.Chart
-import com.vaadin.addon.charts.model._
-import com.vaadin.addon.charts.model.style._
-import com.vaadin.ui.themes.ValoTheme
-import com.vaadin.data.Validator.InvalidValueException
-import java.util.Date
-import vaadin.scala.Validator._
 import scala.util.Try
+import vaadin.scala._
+import vaadin.scala.Validator._
+import com.vaadin.ui.themes.ValoTheme
+import java.util.Date
 
 class WorkoutEditorView extends GridLayout {
   columns = 2
   rows = 6
   spacing = true
 
-  val title = add(Label("New Workout", undefSize = true, styles = Vector(ValoTheme.LABEL_H3, ValoTheme.LABEL_BOLD)),
-    0, 0, 1, 0, alignment = Alignment.TopCenter)
+  val title = add(new Label {
+    value = "New Workout"
+    sizeUndefined
+    styleNames += ValoTheme.LABEL_H3 + " " + ValoTheme.LABEL_BOLD
+  }, 0, 0, 1, 0, alignment = Alignment.TopCenter)
   title.contentMode = Label.ContentMode.Html
 
   val activity = add(new ComboBox {
@@ -28,8 +27,13 @@ class WorkoutEditorView extends GridLayout {
 
   val duration = add(new ValidatedTextField("Duration", 1, 600, true))
 
-  val date = add(DateField("Date", fullSize = true, req = true,
-    initialValue = Some(new Date), format = Some("dd.MM.yyyy")))
+  val date = add(new DateField {
+    sizeFull
+    caption = "Date"
+    required = true
+    value = new Date
+    dateFormat = "dd.MM.yyyy"
+  })
 
   date.validators += { v: Option[Any] =>
     v match {
@@ -42,10 +46,21 @@ class WorkoutEditorView extends GridLayout {
   val avgHR = add(new ValidatedTextField("Average HR", 50, 250))
   val maxHR = add(new ValidatedTextField("Max HR", 50, 250))
 
-  val comment = add(TextArea("Comment", fullSize = true), 0, 4, 1, 4)
+  val comment = add(new TextArea {
+    caption = "Comment"
+    sizeFull
+  }, 0, 4, 1, 4)
 
-  val addButton = add(Button("Add", true, style = Some(ValoTheme.BUTTON_PRIMARY)))
-  val clearButton = add(Button("Clear", true))
+  val addButton = add(new Button {
+    caption = "Add"
+    sizeFull
+    styleName = ValoTheme.BUTTON_PRIMARY
+  })
+
+  val clearButton = add(new Button {
+    caption = "Clear"
+    sizeFull
+  })
 
   def clearFields {
     activity.value = None
